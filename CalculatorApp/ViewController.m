@@ -16,10 +16,15 @@
 
 @synthesize valueLabel;
 
+
+
 - (void) viewDidLoad {
     [super viewDidLoad];
     calculator = [[Calculator alloc] init];
     [calculator initMemberVar];
+    isReadyToInputNewValue = true;
+    isReadyToReplay = false;
+    isSelectedOperator = false;
 }
 
 - (void) didReceiveMemoryWarning {
@@ -27,25 +32,52 @@
 }
 
 - (IBAction) clickNumber: (UIButton *) sender {
-    if(isInputNewValue || [valueLabel.text isEqualToString:@"0"]) {
+    
+    if(isReadyToInputNewValue || [valueLabel.text isEqualToString:@"0"]) {
         valueLabel.text = @"";
+        isReadyToReplay = false;
+        isSelectedOperator = false;
     }
-    isInputNewValue = false;
-    valueLabel.text = [valueLabel.text stringByAppendingFormat:[NSString stringWithFormat:@"%li", sender.tag]];
+    valueLabel.text = [valueLabel.text stringByAppendingString:[NSString stringWithFormat:@"%li", sender.tag]];
+    
+    isReadyToInputNewValue = false;
 }
 
 - (IBAction) clickOperator: (UIButton *) sender {
     
-    if ([sender.restorationIdentifier isEqualToString:@"clear"]) {
-        [calculator initMemberVar];
-        valueLabel.text = @"0";
-        return;
-    }
+    isReadyToReplay = false;
+    
+    if(isSelectedOperator) return;
+    
     calculator.currentValue = [valueLabel.text intValue];
     [calculator calculate:preOper];
     valueLabel.text = [NSString stringWithFormat:@"%i", calculator.resultValue];
+    
     preOper = sender.restorationIdentifier;
-    isInputNewValue = true;
+    isSelectedOperator = true;
+    isReadyToInputNewValue = true;
+}
+
+- (IBAction) clickClear: (UIButton *) sender {
+    
+    isReadyToReplay = false;
+    isSelectedOperator = false;
+    isReadyToInputNewValue = true;
+    
+    [calculator initMemberVar];
+    valueLabel.text = @"0";
+    preOper = @"";
+}
+
+- (IBAction) clickEqual: (UIButton *) sender {
+    if(!isReadyToReplay) calculator.currentValue = [valueLabel.text intValue];
+    
+    [calculator calculate:preOper];
+    valueLabel.text = [NSString stringWithFormat:@"%i", calculator.resultValue];
+ 
+    isReadyToReplay = true;
+    isSelectedOperator  = false;
+    isReadyToInputNewValue = true;
 }
 
 @end

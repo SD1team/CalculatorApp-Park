@@ -34,7 +34,6 @@
         
     } else if([oper isEqualToString:@"mod"]) {
         resultValue = resultValue % currentValue;
-        
     } else {
         resultValue = currentValue;
     }
