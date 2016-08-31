@@ -104,6 +104,7 @@
 		813E3EB51D7587FB0060DB63 /* CalculatorApp */ = {
 			isa = PBXGroup;
 			children = (
+				E366C20E1D76AC18008BC7E4 /* Calculator */,
 				813E3EB91D7587FB0060DB63 /* AppDelegate.h */,
 				813E3EBA1D7587FB0060DB63 /* AppDelegate.m */,
 				813E3EBC1D7587FB0060DB63 /* ViewController.h */,
@@ -113,8 +114,6 @@
 				813E3EC41D7587FB0060DB63 /* LaunchScreen.storyboard */,
 				813E3EC71D7587FB0060DB63 /* Info.plist */,
 				813E3EB61D7587FB0060DB63 /* Supporting Files */,
-				81AA6CB81D766BEC00A6DFDD /* Calculator.h */,
-				81AA6CB91D766C0900A6DFDD /* Calculator.m */,
 			);
 			path = CalculatorApp;
 			sourceTree = "<group>";
@@ -143,6 +142,15 @@
 				813E3EDD1D7587FB0060DB63 /* Info.plist */,
 			);
 			path = CalculatorAppUITests;
+			sourceTree = "<group>";
+		};
+		E366C20E1D76AC18008BC7E4 /* Calculator */ = {
+			isa = PBXGroup;
+			children = (
+				81AA6CB81D766BEC00A6DFDD /* Calculator.h */,
+				81AA6CB91D766C0900A6DFDD /* Calculator.m */,
+			);
+			name = Calculator;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

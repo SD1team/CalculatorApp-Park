@@ -26,15 +26,15 @@
     [super didReceiveMemoryWarning];
 }
 
-- (IBAction) clickNumber: (UIButton *) sender {
+- (IBAction)clickNumber:(UIButton *)sender {
     if(isInputNewValue || [valueLabel.text isEqualToString:@"0"]) {
         valueLabel.text = @"";
     }
     isInputNewValue = false;
-    valueLabel.text = [valueLabel.text stringByAppendingFormat:[NSString stringWithFormat:@"%li", sender.tag]];
+    valueLabel.text = [valueLabel.text stringByAppendingFormat:[NSString stringWithFormat:@"%li", sender.tag],nil];
 }
 
-- (IBAction) clickOperator: (UIButton *) sender {
+- (IBAction)clickOperator:(UIButton *)sender{
     
     if ([sender.restorationIdentifier isEqualToString:@"clear"]) {
         [calculator initMemberVar];
