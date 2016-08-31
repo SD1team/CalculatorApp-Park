@@ -13,9 +13,9 @@
     
     Calculator *calculator;
     NSString *preOper;
-    BOOL isReadyToInputNewValue; // 숫자를 새로 입력할 때 라벨에 0 이 있을 때 지우고 작성하기 위해서
-    BOOL isReadyToReplay; // equal 연속으로 클릭했을 때
-    BOOL isSelectedOperator; // 연산자 연속으로 클릭했을 때
+    BOOL isReadyToInputNewValue;
+    BOOL isReadyToReplay;
+    BOOL isSelectedOperator;
 }
 
 @property (weak, nonatomic) IBOutlet UILabel *valueLabel;
