@@ -16,8 +16,6 @@
 
 @synthesize valueLabel;
 
-
-
 - (void) viewDidLoad {
     [super viewDidLoad];
     calculator = [[Calculator alloc] init];
@@ -43,7 +41,7 @@
     isReadyToInputNewValue = false;
 }
 
-- (IBAction) clickOperator: (UIButton *) sender {
+- (IBAction)clickOperator:(UIButton *)sender{
     
     isReadyToReplay = false;
     
