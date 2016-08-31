@@ -14,8 +14,10 @@
     int currentValue;
 }
 
--(void) init;
--(void) calculate: (char) oper;
+@property int resultValue, currentValue;
+
+-(void) initMemberVar;
+-(void) calculate: (NSString*) oper;
 
 @end
 

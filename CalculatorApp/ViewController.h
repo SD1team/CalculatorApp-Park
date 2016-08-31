@@ -7,9 +7,19 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "Calculator.h"
 
-@interface ViewController : UIViewController
+@interface ViewController : UIViewController {
+    
+    Calculator *calculator;
+    NSString *preOper;
+    BOOL isInputNewValue;
+}
 
+@property (weak, nonatomic) IBOutlet UILabel *valueLabel;
+
+- (IBAction)clickNumber:(UIButton *)sender;
+- (IBAction)clickOperator:(UIButton *)sender;
 
 @end
 

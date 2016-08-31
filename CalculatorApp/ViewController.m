@@ -14,14 +14,38 @@
 
 @implementation ViewController
 
-- (void)viewDidLoad {
+@synthesize valueLabel;
+
+- (void) viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view, typically from a nib.
+    calculator = [[Calculator alloc] init];
+    [calculator initMemberVar];
 }
 
-- (void)didReceiveMemoryWarning {
+- (void) didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+}
+
+- (IBAction) clickNumber: (UIButton *) sender {
+    if(isInputNewValue || [valueLabel.text isEqualToString:@"0"]) {
+        valueLabel.text = @"";
+    }
+    isInputNewValue = false;
+    valueLabel.text = [valueLabel.text stringByAppendingFormat:[NSString stringWithFormat:@"%li", sender.tag]];
+}
+
+- (IBAction) clickOperator: (UIButton *) sender {
+    
+    if ([sender.restorationIdentifier isEqualToString:@"clear"]) {
+        [calculator initMemberVar];
+        valueLabel.text = @"0";
+        return;
+    }
+    calculator.currentValue = [valueLabel.text intValue];
+    [calculator calculate:preOper];
+    valueLabel.text = [NSString stringWithFormat:@"%i", calculator.resultValue];
+    preOper = sender.restorationIdentifier;
+    isInputNewValue = true;
 }
 
 @end

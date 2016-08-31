@@ -11,30 +11,32 @@
 
 @implementation Calculator
 
--(void) init {
+@synthesize resultValue, currentValue;
+
+- (void) initMemberVar {
     resultValue = 0;
     currentValue = 0;
 }
 
--(void) calculate: (char) oper {
-    switch (oper) {
-        case '+':
-            resultValue = resultValue + currentValue;
-            break;
-        case '-':
-            resultValue = resultValue - currentValue;
-            break;
-        case '*':
-            resultValue = resultValue * currentValue;
-            break;
-        case '/':
-            resultValue = resultValue / currentValue;
-            break;
-        case '%':
-            resultValue = resultValue % currentValue;
-            break;
-        default:
-            break;
+- (void) calculate: (NSString*) oper {
+    
+    if([oper isEqualToString:@"plus"]) {
+        resultValue = resultValue + currentValue;
+        
+    } else if([oper isEqualToString:@"minus"]) {
+        resultValue = resultValue - currentValue;
+        
+    } else if([oper isEqualToString:@"multiply"]) {
+        resultValue = resultValue * currentValue;
+        
+    } else if([oper isEqualToString:@"divide"]) {
+        resultValue = resultValue / currentValue;
+        
+    } else if([oper isEqualToString:@"mod"]) {
+        resultValue = resultValue % currentValue;
+        
+    } else {
+        resultValue = currentValue;
     }
 }
 
