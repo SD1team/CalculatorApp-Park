@@ -8,6 +8,11 @@
 
 #import "ViewController.h"
 
+#define INPUT_NUMBER 1
+#define INPUT_OPERATOR 2
+#define INPUT_EQUAL 3
+#define INPUT_CLEAR 4
+
 @interface ViewController ()
 
 @end
@@ -18,11 +23,10 @@
 
 - (void) viewDidLoad {
     [super viewDidLoad];
+    
     calculator = [[Calculator alloc] init];
-    [calculator initMemberVar];
-    isReadyToInputNewValue = true;
-    isReadyToReplay = false;
-    isSelectedOperator = false;
+    
+    [self clearCalculator];
 }
 
 - (void) didReceiveMemoryWarning {
@@ -31,51 +35,53 @@
 
 - (IBAction) clickNumber: (UIButton *) sender {
     
-    if(isReadyToInputNewValue || [valueLabel.text isEqualToString:@"0"]) {
-        valueLabel.text = @"";
-        isReadyToReplay = false;
-        isSelectedOperator = false;
-    }
+    if(lastInputType == INPUT_EQUAL) [self clearCalculator];
+    if(lastInputType == INPUT_OPERATOR) valueLabel.text = @"";
+    
+    if([valueLabel.text isEqualToString:@"0"]) valueLabel.text = @"";
+    
     valueLabel.text = [valueLabel.text stringByAppendingString:[NSString stringWithFormat:@"%li", sender.tag]];
     
-    isReadyToInputNewValue = false;
+    lastInputType = INPUT_NUMBER;
 }
 
 - (IBAction)clickOperator:(UIButton *)sender{
     
-    isReadyToReplay = false;
-    
-    if(isSelectedOperator) return;
+    if(lastInputType == INPUT_CLEAR || lastInputType == INPUT_OPERATOR) return;
+    if(lastInputType == INPUT_EQUAL) preOper = @"";
     
     calculator.currentValue = [valueLabel.text intValue];
     [calculator calculate:preOper];
     valueLabel.text = [NSString stringWithFormat:@"%i", calculator.resultValue];
     
     preOper = sender.restorationIdentifier;
-    isSelectedOperator = true;
-    isReadyToInputNewValue = true;
+    
+    lastInputType = INPUT_OPERATOR;
+}
+
+- (IBAction) clickEqual: (UIButton *) sender {
+    
+    if(lastInputType == INPUT_OPERATOR || lastInputType == INPUT_CLEAR) return;
+    
+    if(lastInputType != INPUT_EQUAL) calculator.currentValue = [valueLabel.text intValue];
+    
+    [calculator calculate:preOper];
+    valueLabel.text = [NSString stringWithFormat:@"%i", calculator.resultValue];
+    
+    lastInputType = INPUT_EQUAL;
 }
 
 - (IBAction) clickClear: (UIButton *) sender {
     
-    isReadyToReplay = false;
-    isSelectedOperator = false;
-    isReadyToInputNewValue = true;
+    [self clearCalculator];
+    lastInputType = INPUT_CLEAR;
+}
+
+- (void) clearCalculator {
     
     [calculator initMemberVar];
     valueLabel.text = @"0";
     preOper = @"";
-}
-
-- (IBAction) clickEqual: (UIButton *) sender {
-    if(!isReadyToReplay) calculator.currentValue = [valueLabel.text intValue];
-    
-    [calculator calculate:preOper];
-    valueLabel.text = [NSString stringWithFormat:@"%i", calculator.resultValue];
- 
-    isReadyToReplay = true;
-    isSelectedOperator  = false;
-    isReadyToInputNewValue = true;
 }
 
 @end

@@ -13,17 +13,17 @@
     
     Calculator *calculator;
     NSString *preOper;
-    BOOL isReadyToInputNewValue;
-    BOOL isReadyToReplay;
-    BOOL isSelectedOperator;
+    int lastInputType;
 }
 
 @property (weak, nonatomic) IBOutlet UILabel *valueLabel;
 
 - (IBAction)clickNumber:(UIButton *)sender;
 - (IBAction)clickOperator:(UIButton *)sender;
-- (IBAction)clickClear:(UIButton *)sender;
 - (IBAction)clickEqual:(UIButton *)sender;
+- (IBAction)clickClear:(UIButton *)sender;
+
+- (void) clearCalculator;
 
 @end
 
