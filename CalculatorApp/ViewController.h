@@ -11,9 +11,13 @@
 
 @interface ViewController : UIViewController {
     
-    Calculator *calculator;
-    NSString *preOper;
+    Calculator *myCal;
+    //NSString *preOper;
     int lastInputType;
+    
+    //int resultVal;
+    //int firstVal, secondVal;
+    //BOOL hasFirstVal, hasSecondVal;
 }
 
 @property (weak, nonatomic) IBOutlet UILabel *valueLabel;

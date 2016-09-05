@@ -8,10 +8,11 @@
 
 #import "ViewController.h"
 
-#define INPUT_NUMBER 1
-#define INPUT_OPERATOR 2
-#define INPUT_EQUAL 3
-#define INPUT_CLEAR 4
+#define INPUT_FIRSTVAL 1
+#define INPUT_SECONDVAL 2
+#define INPUT_OPERATOR 3
+#define INPUT_EQUAL 4
+#define INPUT_CLEAR 5
 
 @interface ViewController ()
 
@@ -24,8 +25,7 @@
 - (void) viewDidLoad {
     [super viewDidLoad];
     
-    calculator = [[Calculator alloc] init];
-    
+    myCal = [[Calculator alloc] init];
     [self clearCalculator];
 }
 
@@ -34,39 +34,53 @@
 }
 
 - (IBAction) clickNumber: (UIButton *) sender {
-    
-    if(lastInputType == INPUT_EQUAL) [self clearCalculator];
-    if(lastInputType == INPUT_OPERATOR) valueLabel.text = @"";
-    
-    if([valueLabel.text isEqualToString:@"0"]) valueLabel.text = @"";
+
+    if(lastInputType == INPUT_EQUAL || lastInputType == INPUT_OPERATOR || [valueLabel.text isEqualToString:@"0"]){
+        valueLabel.text = @"";
+    }
     
     valueLabel.text = [valueLabel.text stringByAppendingString:[NSString stringWithFormat:@"%li", sender.tag]];
     
-    lastInputType = INPUT_NUMBER;
+    if (lastInputType == INPUT_CLEAR || lastInputType == INPUT_EQUAL || lastInputType == INPUT_FIRSTVAL) {
+        myCal.firstVal = [valueLabel.text intValue];
+        lastInputType = INPUT_FIRSTVAL;
+    }
+    if (lastInputType == INPUT_OPERATOR || lastInputType == INPUT_SECONDVAL) {
+        myCal.secondVal = [valueLabel.text intValue];
+        lastInputType = INPUT_SECONDVAL;
+        myCal.hasSecondVal = true;
+    }
 }
 
 - (IBAction)clickOperator:(UIButton *)sender{
     
     if(lastInputType == INPUT_CLEAR || lastInputType == INPUT_OPERATOR) return;
-    if(lastInputType == INPUT_EQUAL) preOper = @"";
+    if (lastInputType == INPUT_EQUAL) {
+        lastInputType = INPUT_FIRSTVAL;
+    }
     
-    calculator.currentValue = [valueLabel.text intValue];
-    [calculator calculate:preOper];
-    valueLabel.text = [NSString stringWithFormat:@"%i", calculator.resultValue];
+    if (lastInputType == INPUT_FIRSTVAL) {
+        myCal.oper = sender.restorationIdentifier;
+    }
     
-    preOper = sender.restorationIdentifier;
+    if(lastInputType == INPUT_SECONDVAL) {
+        [myCal calculate];
+        valueLabel.text = [NSString stringWithFormat:@"%i", myCal.resultVal];
+        myCal.firstVal = [valueLabel.text intValue];
+        myCal.oper = sender.restorationIdentifier;
+    }
     
     lastInputType = INPUT_OPERATOR;
 }
 
 - (IBAction) clickEqual: (UIButton *) sender {
+
+    if (lastInputType == INPUT_FIRSTVAL && myCal.hasSecondVal == false) return;
+    if (lastInputType == INPUT_CLEAR) return;
     
-    if(lastInputType == INPUT_OPERATOR || lastInputType == INPUT_CLEAR) return;
-    
-    if(lastInputType != INPUT_EQUAL) calculator.currentValue = [valueLabel.text intValue];
-    
-    [calculator calculate:preOper];
-    valueLabel.text = [NSString stringWithFormat:@"%i", calculator.resultValue];
+    [myCal calculate];
+    valueLabel.text = [NSString stringWithFormat:@"%i", myCal.resultVal];
+    myCal.firstVal = [valueLabel.text intValue];
     
     lastInputType = INPUT_EQUAL;
 }
@@ -74,14 +88,12 @@
 - (IBAction) clickClear: (UIButton *) sender {
     
     [self clearCalculator];
-    lastInputType = INPUT_CLEAR;
 }
 
 - (void) clearCalculator {
-    
-    [calculator initMemberVar];
+    [myCal initCalculate];
+    lastInputType = INPUT_CLEAR;
     valueLabel.text = @"0";
-    preOper = @"";
 }
 
 @end

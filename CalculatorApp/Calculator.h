@@ -10,14 +10,20 @@
 #define Calculator_h
 
 @interface Calculator : NSObject {
-    int resultValue;
-    int currentValue;
+    
+    NSString *oper;
+    int firstVal;
+    int secondVal;
+    int resultVal;
+    BOOL hasSecondVal;
 }
 
-@property int resultValue, currentValue;
+@property NSString* oper;
+@property int firstVal, secondVal, resultVal;
+@property BOOL hasSecondVal;
 
--(void) initMemberVar;
--(void) calculate: (NSString*) oper;
+-(void) initCalculate;
+-(void) calculate;
 
 @end
 

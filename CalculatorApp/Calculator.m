@@ -11,31 +11,39 @@
 
 @implementation Calculator
 
-@synthesize resultValue, currentValue;
+@synthesize oper;
+@synthesize firstVal, secondVal, resultVal;
+@synthesize hasSecondVal;
 
-- (void) initMemberVar {
-    resultValue = 0;
-    currentValue = 0;
+- (void) initCalculate {
+    firstVal = 0;
+    secondVal = 0;
+    resultVal = 0;
+    oper = nil;
+    hasSecondVal = false;
 }
 
-- (void) calculate: (NSString*) oper {
+- (void) calculate {
+    
+    if (!hasSecondVal) {
+        secondVal = firstVal;
+        hasSecondVal = true;
+    }
     
     if([oper isEqualToString:@"plus"]) {
-        resultValue = resultValue + currentValue;
+        resultVal = firstVal + secondVal;
         
     } else if([oper isEqualToString:@"minus"]) {
-        resultValue = resultValue - currentValue;
+        resultVal = firstVal - secondVal;
         
     } else if([oper isEqualToString:@"multiply"]) {
-        resultValue = resultValue * currentValue;
+        resultVal = firstVal * secondVal;
         
     } else if([oper isEqualToString:@"divide"]) {
-        resultValue = resultValue / currentValue;
+        resultVal = firstVal / secondVal;
         
     } else if([oper isEqualToString:@"mod"]) {
-        resultValue = resultValue % currentValue;
-    } else {
-        resultValue = currentValue;
+        resultVal = firstVal % secondVal;
     }
 }
 
